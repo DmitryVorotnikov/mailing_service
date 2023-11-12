@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -18,3 +17,38 @@ class Client(models.Model):
         verbose_name_plural = 'Клиенты'
         ordering = ('id',)
 
+
+class Mailing(models.Model):
+    PERIOD_DAILY = 'daily'
+    PERIOD_WEEKLY = 'weekly'
+    PERIOD_MONTHLY = 'monthly'
+    PERIODS = (
+        (PERIOD_DAILY, 'Ежедневная'),
+        (PERIOD_WEEKLY, 'Раз в неделю'),
+        (PERIOD_MONTHLY, 'Раз в месяц'),
+    )
+
+    STATUS_CREATED = 'created'
+    STATUS_STARTED = 'started'
+    STATUS_DONE = 'done'
+    STATUSES = (
+        (STATUS_STARTED, 'Запущена'),
+        (STATUS_CREATED, 'Создана'),
+        (STATUS_DONE, 'Завершена'),
+    )
+
+    clients_list = models.ManyToManyField('Client', blank=True, related_name='mailings', verbose_name='Клиент')
+    mailing_name = models.CharField(max_length=200, verbose_name='Имя рассылки')
+    time = models.TimeField(verbose_name='Время рассылки')
+    period = models.CharField(max_length=25, choices=PERIODS, verbose_name='Периодичность')
+    status = models.CharField(max_length=25, choices=STATUSES, verbose_name='Статус')
+    send_mail_subject = models.CharField(max_length=200, verbose_name='Тема письма')
+    send_mail_message = models.TextField(max_length=1500, verbose_name='Текст письма')
+
+    def __str__(self):
+        return f'{self.mailing_name}'
+
+    class Meta:
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
+        ordering = ('id',)
