@@ -52,3 +52,28 @@ class Mailing(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
         ordering = ('id',)
+
+
+class MailingLog(models.Model):
+    STATUS_OK = 'ok'
+    STATUS_FAILED = 'failed'
+    STATUSES = (
+        (STATUS_OK, 'Успешно'),
+        (STATUS_FAILED, 'Ошибка'),
+    )
+
+    mailing = models.ForeignKey('Mailing', on_delete=models.CASCADE, verbose_name='Рассылка')
+    last_mailing = models.DateTimeField(verbose_name='Время последней попытки')
+    status = models.CharField(max_length=25, choices=STATUSES, verbose_name='Статус')
+    clients_full_name = models.TextField(verbose_name='ФИО клиентов')
+    clients_email = models.TextField(verbose_name='email клиентов')
+    mailing_name = models.CharField(max_length=200, verbose_name='Имя рассылки')
+    error_message = models.TextField(verbose_name='Сообщение об ошибке', **NULLABLE)
+
+    def __str__(self):
+        return f'{self.mailing_name} - {self.last_mailing}'
+
+    class Meta:
+        verbose_name = 'Лог рассылки'
+        verbose_name_plural = 'Логи рассылок'
+        ordering = ('id',)
