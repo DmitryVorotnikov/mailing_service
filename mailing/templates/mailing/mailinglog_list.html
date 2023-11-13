@@ -1,0 +1,65 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Отчеты</h1>
+    <p class="lead">Здесь вы можете просматривать автоматические созданные отчеты для рассылок.</p>
+</div>
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+    <a class="btn btn-lg btn-primary" style="margin-left: 102px;" href="{% url 'mailing:mailings_create' %}">Создать
+        новую рассылку</a>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <h5 class="card-title">Имя рассылки</h5>
+                        </div>
+                        <div class="col-sm-2">
+                            <h5 class="card-title">Статус</h5>
+                        </div>
+                        <div class="col-sm-5">
+                            <h5 class="card-title">Данные по клиентам</h5>
+                        </div>
+                        <div class="col-sm-3">
+                            <h5 class="card-title">Сообщение об ошибке</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% for object in object_list %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <p class="card-text">{{ object.mailing_name }}</p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p class="card-text">{{ object.status }}</p>
+                            <p class="card-text">Время последней попытки: {{ object.last_mailing }}</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p class="card-text">ФИО клиентов: {{ object.clients_full_name }}</p>
+                            <p class="card-text">Email клиентов: {{ object.clients_email }}</p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p class="card-text">{{ object.error_message }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

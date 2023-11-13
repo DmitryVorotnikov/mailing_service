@@ -20,9 +20,10 @@
             </div>
             <div class="col-3 col-md">
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Рассылки</a></li>
-                    <li><a class="text-muted" href="#">Клиенты</a></li>
-                    <li><a class="text-muted" href="#">Отчеты</a></li>
+                    <li><a class="text-muted" href="#">Главная</a></li>
+                    <li><a class="text-muted" href="{% url 'mailing:mailings_list' %}">Рассылки</a></li>
+                    <li><a class="text-muted" href="{% url 'mailing:clients_list' %}">Клиенты</a></li>
+                    <li><a class="text-muted" href="{% url 'mailing:report_list' %}">Отчеты</a></li>
                     <li><a class="text-muted" href="#"></a></li>
                     <li><a class="text-muted" href="#"></a></li>
                 </ul>
