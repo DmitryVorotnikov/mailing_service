@@ -4,16 +4,23 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.utils import timezone
 
-from mailing.models import MailingLog
+from mailing.models import MailingLog, Client
 
 
 def set_mailing_affiliation(mailing):
     """
-    Явно задает у клиентов в поле mailings_list принадлежность к рассылке.
+    Явно задает у клиентов в поле mailings_list принадлежность (или ее отсутствие) к рассылке.
     """
+    # Задаем принадлежность к рассылке если клиент указан в рассылке.
     for client in mailing.clients_list.all():
         if not client.mailings_list.filter(pk=mailing.pk).exists():
             client.mailings_list.add(mailing)
+
+    # Если клиент убран из рассылки, то удаляем у клиента принадлежность к рассылке.
+    clients = Client.objects.all()
+    for client in clients:
+        if mailing in client.mailings_list.all() and client not in mailing.clients_list.all():
+            client.mailings_list.remove(mailing)
 
 
 def send_mail_make_report(mailing):
@@ -56,7 +63,7 @@ def send_mail_make_report(mailing):
         # Создаем отчет - объект класса MailingLog.
         MailingLog.objects.create(
             mailing=mailing,
-            last_mailing=timezone.now(),
+            last_mailing=timezone.localtime(timezone.now()),
             status=status,
             clients_full_name=clients_full_name_list,
             clients_email=clients_email_list,

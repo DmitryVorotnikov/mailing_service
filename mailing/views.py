@@ -39,7 +39,7 @@ class MailingCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save()
 
-        # Явно задаем у клиентов в поле mailings_list принадлежность к рассылке.
+        # Явно задает у клиентов в поле mailings_list принадлежность (или ее отсутствие) к рассылке.
         set_mailing_affiliation(self.object)
         # Отправляем письмо и формируем отчет.
         send_mail_make_report(self.object)
@@ -55,10 +55,8 @@ class MailingUpdateView(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
 
-        # Явно задаем у клиентов в поле mailings_list принадлежность к рассылке.
+        # Явно задает у клиентов в поле mailings_list принадлежность (или ее отсутствие) к рассылке.
         set_mailing_affiliation(self.object)
-        # Отправляем письмо и формируем отчет.
-        send_mail_make_report(self.object)
 
         return super().form_valid(form)
 
