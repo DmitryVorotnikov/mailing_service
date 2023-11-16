@@ -18,4 +18,7 @@ urlpatterns = [
     path('mailings/delete/<int:pk>/', MailingDeleteView.as_view(), name='mailings_delete'),
 
     path('report/', MailingLogListView.as_view(), name='report_list'),
+
+
+    # path('', MailingLogListView.as_view(), name='report_list'), Тут будет главная страница
 ]
