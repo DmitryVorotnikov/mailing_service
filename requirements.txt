@@ -4,3 +4,4 @@ psycopg2
 pillow
 ipython
 django-crontab
+redis

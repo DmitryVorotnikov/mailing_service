@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -237,12 +239,37 @@ class MainListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Получаем все объекты Article и берем только последние четыре
-        context['object_list'] = Article.objects.all().order_by('-id')[:4]
+
+        # Кеширование данных.
+        if settings.CACHE_ENABLED:
+            key = f'main_page'
+            subjects = cache.get(key)
+            if subjects is None:
+                cache_timeout = 60 * 2  # Время жизни кеша, в секундах
+
+                # Добавляем данные для отображения на главной странице
+                mailing_count = Mailing.objects.count()
+                mailing_active_count = Mailing.objects.filter(status='started').count()
+                client_count = Client.objects.count()
+                # Получаем все объекты Article и берем только последние четыре
+                object_list = Article.objects.all().order_by('-id')[:4]
+
+                subjects = [mailing_count, mailing_active_count, client_count, object_list]
+                cache.set(key, subjects, cache_timeout)
+        else:
+            # Добавляем данные для отображения на главной странице
+            mailing_count = Mailing.objects.count()
+            mailing_active_count = Mailing.objects.filter(status='started').count()
+            client_count = Client.objects.count()
+            # Получаем все объекты Article и берем только последние четыре
+            object_list = Article.objects.all().order_by('-id')[:4]
+
+            subjects = [mailing_count, mailing_active_count, client_count, object_list]
 
         # Добавляем данные для отображения на главной странице
-        context['mailing_count'] = Mailing.objects.count()
-        context['mailing_active_count'] = Mailing.objects.filter(status='started').count()
-        context['client_count'] = Client.objects.count()
+        context['mailing_count'] = subjects[0]
+        context['mailing_active_count'] = subjects[1]
+        context['client_count'] = subjects[2]
+        context['object_list'] = subjects[3]
 
         return context
