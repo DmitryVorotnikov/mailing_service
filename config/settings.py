@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'django_crontab',
 
     'mailing',
-]
 
+    'users',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -133,6 +134,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# User model
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/mailings/'  ##########################################################
+LOGOUT_REDIRECT_URL = '/mailings/'  ##########################################################
+LOGIN_URL = '/users/'
 
 # Email data
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
