@@ -6,9 +6,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from blog.models import Article
+from mailing.cron import send_mail_make_report_for_all
 from mailing.forms import ClientForm, MailingForUserForm, MailingForManagerForm
 from mailing.models import Client, Mailing, MailingLog
-from mailing.services import set_mailing_affiliation, send_mail_make_report
+from mailing.services import set_mailing_affiliation
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -127,8 +128,7 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         # Явно задает у клиентов в поле mailings_list принадлежность (или ее отсутствие) к рассылке.
         set_mailing_affiliation(self.object)
         # Отправляем письмо и формируем отчет.
-        send_mail_make_report(self.object, self.request.user)  #######################################
-        # send_mail_make_report_for_all()
+        send_mail_make_report_for_all()
 
         return super().form_valid(form)
 
@@ -179,8 +179,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         # Явно задает у клиентов в поле mailings_list принадлежность (или ее отсутствие) к рассылке.
         set_mailing_affiliation(self.object)
         # Отправляем письмо и формируем отчет.
-        send_mail_make_report(self.object, self.request.user)  #######################################
-        # send_mail_make_report_for_all()
+        send_mail_make_report_for_all()
 
         return super().form_valid(form)
 
