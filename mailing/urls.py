@@ -2,7 +2,7 @@ from django.urls import path
 
 from mailing.apps import MailingConfig
 from mailing.views import ClientListView, ClientCreateView, ClientUpdateView, ClientDeleteView, MailingListView, \
-    MailingCreateView, MailingUpdateView, MailingDeleteView, MailingLogListView
+    MailingCreateView, MailingUpdateView, MailingDeleteView, MailingLogListView, MainListView
 
 app_name = MailingConfig.name
 
@@ -20,5 +20,5 @@ urlpatterns = [
     path('report/', MailingLogListView.as_view(), name='report_list'),
 
 
-    # path('', MailingLogListView.as_view(), name='report_list'), Тут будет главная страница
+    path('', MainListView.as_view(), name='main_page'),
 ]

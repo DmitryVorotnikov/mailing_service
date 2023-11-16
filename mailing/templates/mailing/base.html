@@ -20,9 +20,11 @@
             </div>
             <div class="col-3 col-md">
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Главная</a></li>
+                    <li><a class="text-muted" href="{% url 'mailing:main_page' %}">Главная</a></li>
+                    {% if user.is_authenticated %}
                     <li><a class="text-muted" href="{% url 'mailing:mailings_list' %}">Рассылки</a></li>
-                    {% if not user.is_staff or user.is_superuser %}
+                    {% endif %}
+                    {% if not user.is_staff and user.is_authenticated or user.is_superuser %}
                     <li><a class="text-muted" href="{% url 'mailing:clients_list' %}">Клиенты</a></li>
                     <li><a class="text-muted" href="{% url 'mailing:report_list' %}">Отчеты</a></li>
                     <li><a class="text-muted" href="{% url 'users:users_list' %}">Пользователи</a></li>

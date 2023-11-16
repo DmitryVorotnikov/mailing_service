@@ -3,6 +3,7 @@ from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
+from blog.models import Article
 from mailing.forms import ClientForm, MailingForUserForm, MailingForManagerForm
 from mailing.models import Client, Mailing, MailingLog
 from mailing.services import set_mailing_affiliation, send_mail_make_report
@@ -228,3 +229,20 @@ class MailingLogListView(LoginRequiredMixin, ListView):
         # Если обычный пользователь, то показываем только его отчеты.
         else:
             return queryset.filter(owner=self.request.user)
+
+
+class MainListView(ListView):
+    model = Article
+    template_name = 'mailing/main_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Получаем все объекты Article и берем только последние четыре
+        context['object_list'] = Article.objects.all().order_by('-id')[:4]
+
+        # Добавляем данные для отображения на главной странице
+        context['mailing_count'] = Mailing.objects.count()
+        context['mailing_active_count'] = Mailing.objects.filter(status='started').count()
+        context['client_count'] = Client.objects.count()
+
+        return context
