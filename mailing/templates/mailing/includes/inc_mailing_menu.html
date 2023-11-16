@@ -19,9 +19,9 @@
                     {% endif %}
                     {% if user.is_staff %}
                     <a class="p-2 btn btn-outline-primary" style="margin-right: 5px;"
-                       href="#">Пользователи</a>
+                       href="{% url 'users:users_list' %}">Пользователи</a>
                     {% endif %}
-                    <a class="p-2 btn btn-outline-primary" style="margin-right: 5px;" href="#">Блог</a>
+                    <a class="p-2 btn btn-outline-primary" style="margin-right: 5px;" href="{% url 'blog:blog_list' %}">Блог</a>
                 </nav>
             </div>
             <div class="col-md-1"></div>

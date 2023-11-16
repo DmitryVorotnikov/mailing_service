@@ -23,15 +23,16 @@
                     <li><a class="text-muted" href="#">Главная</a></li>
                     <li><a class="text-muted" href="{% url 'mailing:mailings_list' %}">Рассылки</a></li>
                     {% if not user.is_staff or user.is_superuser %}
-                        <li><a class="text-muted" href="{% url 'mailing:clients_list' %}">Клиенты</a></li>
-                        <li><a class="text-muted" href="{% url 'mailing:report_list' %}">Отчеты</a></li>
+                    <li><a class="text-muted" href="{% url 'mailing:clients_list' %}">Клиенты</a></li>
+                    <li><a class="text-muted" href="{% url 'mailing:report_list' %}">Отчеты</a></li>
+                    <li><a class="text-muted" href="{% url 'users:users_list' %}">Пользователи</a></li>
                     {% endif %}
                 </ul>
             </div>
             <div class="col-3 col-md">
                 <h5>Дополнительно</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Наш блог</a></li>
+                    <li><a class="text-muted" href="{% url 'blog:blog_list' %}">Наш блог</a></li>
                 </ul>
             </div>
         </div>

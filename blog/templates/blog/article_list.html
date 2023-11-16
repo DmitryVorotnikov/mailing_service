@@ -1,0 +1,33 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Статьи</h1>
+</div>
+
+<div class="container">
+    <div class="row text-center">
+        {% for object in object_list %}
+        <div class="col-6">
+            <div class="card mb-4 box-shadow" style="height: 700px;">
+                <div class="card-header">
+                    <img src="/media/{{ object.preview }}" style="max-width: 550%; height: auto;"
+                         class="card-img-bottom">
+                    <h4 class="my-0 font-weight-normal">{{ object.title }}</h4>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <div class="mt-auto">
+                        <p class="card-title pricing-card-title" style="text-align: left;">
+                            {{ object.content|slice:":340" }}...</p>
+                    </div>
+                    <div class="mt-auto">
+                        <a href="{% url 'blog:blog_item' object.pk %}"
+                           class="btn btn-lg btn-block btn-outline-primary">Читать</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
