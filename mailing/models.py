@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
@@ -8,6 +9,8 @@ class Client(models.Model):
     email = models.EmailField(verbose_name='email клиента')
     full_name = models.CharField(max_length=200, verbose_name='ФИО')
     comment = models.TextField(max_length=300, verbose_name='Комментарий', **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+                                      verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
         return f'{self.full_name} - {self.email}'
@@ -44,6 +47,8 @@ class Mailing(models.Model):
     status = models.CharField(default='Создана', max_length=25, choices=STATUSES, verbose_name='Статус')
     send_mail_subject = models.CharField(max_length=200, verbose_name='Тема письма')
     send_mail_message = models.TextField(max_length=1500, verbose_name='Текст письма')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+                              verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
         return f'{self.mailing_name}'
@@ -69,6 +74,8 @@ class MailingLog(models.Model):
     clients_email = models.TextField(verbose_name='email клиентов')
     mailing_name = models.CharField(max_length=200, verbose_name='Имя рассылки')
     error_message = models.TextField(verbose_name='Сообщение об ошибке', **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+                              verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
         return f'{self.mailing_name} - {self.last_mailing}'

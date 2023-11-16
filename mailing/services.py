@@ -23,7 +23,7 @@ def set_mailing_affiliation(mailing):
             client.mailings_list.remove(mailing)
 
 
-def send_mail_make_report(mailing):
+def send_mail_make_report(mailing, user):
     """
     Отправляет письмо и формируем отчет.
     """
@@ -68,5 +68,6 @@ def send_mail_make_report(mailing):
             clients_full_name=clients_full_name_list,
             clients_email=clients_email_list,
             mailing_name=mailing.mailing_name,
-            error_message=error_message
+            error_message=error_message,
+            owner=user,
         )

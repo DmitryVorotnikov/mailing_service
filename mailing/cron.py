@@ -19,6 +19,9 @@ def send_mail_make_report_for_all():
     time_now = datetime_now.time()  # time
 
     for mailing in mailing_list:
+        # Получаем владельца рассылки.
+        mailing_owner = mailing.owner
+
         # Получаем time указанный в настройках рассылки.
         time_mailing = mailing.time  # time
 
@@ -35,7 +38,7 @@ def send_mail_make_report_for_all():
             # Проверяем, находится ли текущее время в диапазоне часа от времени рассылки.
             elif abs(time_mailing.hour - time_now.hour) <= 1:
                 print('Текущее время в пределах часа, надо отправлять письмо и создавать отчет')
-                send_mail_make_report(mailing)
+                send_mail_make_report(mailing, mailing_owner)
             else:
                 print('Текущее время не в пределах часа, ничего не делаем')
 
@@ -59,7 +62,7 @@ def send_mail_make_report_for_all():
             elif datetime_now - timedelta(hours=1) <= monday_time_mailing_tz <= datetime_now + timedelta(
                     hours=1):
                 print('Текущее время в пределах часа, надо отправлять письмо и создавать отчет')
-                send_mail_make_report(mailing)
+                send_mail_make_report(mailing, mailing_owner)
             else:
                 print('Текущее время не в пределах часа, ничего не делаем')
 
@@ -81,10 +84,10 @@ def send_mail_make_report_for_all():
             elif datetime_now - timedelta(hours=1) <= first_day_time_mailing_tz <= datetime_now + timedelta(
                     hours=1):
                 print('Текущее время в пределах часа, надо отправлять письмо и создавать отчет')
-                send_mail_make_report(mailing)
+                send_mail_make_report(mailing, mailing_owner)
             else:
                 print('Текущее время не в пределах часа, ничего не делаем')
 
         if not mailing_log and mailing.status == 'started':
             print('Отчет еще не был создан, надо отправлять письмо и создавать отчет')
-            send_mail_make_report(mailing)
+            send_mail_make_report(mailing, mailing_owner)
