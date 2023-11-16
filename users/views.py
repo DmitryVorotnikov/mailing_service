@@ -3,9 +3,10 @@ import secrets
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.core.mail import send_mail
+from django.http import Http404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView, RedirectView
-from users.forms import UserRegisterForm, UserProfileForm
+from django.views.generic import CreateView, UpdateView, RedirectView, ListView
+from users.forms import UserRegisterForm, UserProfileForm, UserForManagerForm
 
 from config import settings
 from users.models import User
@@ -77,3 +78,32 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     # Что бы не пришлось на страницу профиля передавать pk.
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class UserListView(LoginRequiredMixin, ListView):
+    model = User
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Если пользователь is_staff=True, то показываем всех обычных пользователей.
+        if self.request.user.is_staff:
+            return queryset.exclude(is_staff=True)
+        # Если пользователь is_staff=False, то вызываем ошибку.
+        else:
+            raise Http404
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserForManagerForm
+    success_url = reverse_lazy('users:users_list')
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+
+        # Если пользователь is_staff=True, то доступ разрешен к редактированию обычных пользователя.
+        if self.request.user.is_staff and not self.object.is_staff:
+            return self.object
+        else:
+            raise Http404('Доступ запрещен')
