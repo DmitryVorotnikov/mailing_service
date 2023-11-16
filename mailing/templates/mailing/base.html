@@ -22,10 +22,10 @@
                 <ul class="list-unstyled text-small">
                     <li><a class="text-muted" href="#">Главная</a></li>
                     <li><a class="text-muted" href="{% url 'mailing:mailings_list' %}">Рассылки</a></li>
-                    <li><a class="text-muted" href="{% url 'mailing:clients_list' %}">Клиенты</a></li>
-                    <li><a class="text-muted" href="{% url 'mailing:report_list' %}">Отчеты</a></li>
-                    <li><a class="text-muted" href="#"></a></li>
-                    <li><a class="text-muted" href="#"></a></li>
+                    {% if not user.is_staff or user.is_superuser %}
+                        <li><a class="text-muted" href="{% url 'mailing:clients_list' %}">Клиенты</a></li>
+                        <li><a class="text-muted" href="{% url 'mailing:report_list' %}">Отчеты</a></li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="col-3 col-md">

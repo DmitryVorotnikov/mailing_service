@@ -6,8 +6,10 @@
     <p class="lead">На этой страницы вы можете создавать, редактировать и удалять рассылки.</p>
 </div>
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+    {% if not user.is_staff or user.is_superuser %}
     <a class="btn btn-lg btn-primary" style="margin-left: 102px;" href="{% url 'mailing:mailings_create' %}">Создать
         рассылку</a>
+    {% endif %}
 </div>
 
 <div class="container">
@@ -58,7 +60,9 @@
                         <div class="col-sm-3">
                             <a href="{% url 'mailing:mailings_edit' object.pk %}"
                                class="btn btn-sm btn-block btn-outline-primary">Редактировать</a>
+                            {% if not user.is_staff or user.is_superuser %}
                             <a href="{% url 'mailing:mailings_delete' object.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
