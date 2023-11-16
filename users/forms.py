@@ -28,3 +28,24 @@ class UserProfileForm(StyleFormMixin, UserChangeForm):
 
         # Скрытие поля password
         self.fields['password'].widget = forms.HiddenInput()
+
+
+class UserForManagerForm(StyleFormMixin, UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name', 'phone_number', 'is_active',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Делаем поля не доступными к редактированию.
+        self.fields['email'].widget.attrs['readonly'] = True
+        self.fields['first_name'].widget.attrs['readonly'] = True
+        self.fields['last_name'].widget.attrs['readonly'] = True
+        self.fields['phone_number'].widget.attrs['readonly'] = True
+
+        # Добавление чекбокса для is_active
+        self.fields['is_active'].widget = forms.CheckboxInput()
+
+        # Скрытие поля password
+        self.fields['password'].widget = forms.HiddenInput()
