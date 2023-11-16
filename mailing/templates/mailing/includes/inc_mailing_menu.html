@@ -17,7 +17,7 @@
                     <a class="p-2 btn btn-outline-primary" style="margin-right: 5px;"
                        href="{% url 'mailing:report_list' %}">Отчеты</a>
                     {% endif %}
-                    {% if user.is_staff and not user.is_superuser %}
+                    {% if user.is_staff %}
                     <a class="p-2 btn btn-outline-primary" style="margin-right: 5px;"
                        href="#">Пользователи</a>
                     {% endif %}

@@ -1,0 +1,79 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Пользователи сервиса</h1>
+    <p class="lead">На этой страницы вы можете просматривать и отключать пользователей сервиса.</p>
+</div>
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h5 class="card-title">Email</h5>
+                        </div>
+                        <div class="col-sm-3">
+                            <h5 class="card-title">Имя и фамилия</h5>
+                        </div>
+                        <div class="col-sm-2">
+                            <h5 class="card-title">Телефонный номер</h5>
+                        </div>
+                        <div class="col-sm-2">
+                            <h5 class="card-title">Статус пользователя</h5>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% for object in object_list %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="card-text">{{ object.email }}</p>
+                        </div>
+                        <div class="col-sm-3">
+                            {% if object.first_name %}
+                            <p class="card-text">{{ object.first_name }} {{ object.last_name }}</p>
+                            {% else %}
+                            <p class="card-text">Не указан</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-2">
+                            {% if object.phone_number %}
+                            <p class="card-text">{{ object.phone_number }}</p>
+                            {% else %}
+                            <p class="card-text">Не указан</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-2">
+                            {% if object.is_active %}
+                            <p class="card-text">Активен</p>
+                            {% else %}
+                            <p class="card-text">Заблокирован</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="{% url 'users:users_edit' object.pk %}"
+                               class="btn btn-sm btn-block btn-outline-primary">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
