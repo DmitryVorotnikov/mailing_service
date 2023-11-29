@@ -20,7 +20,7 @@ class RegisterView(CreateView):
     model = User
     form_class = UserRegisterForm
     template_name = 'users/register.html'
-    success_url = reverse_lazy('mailing:mailings_list')  ##################################################
+    success_url = reverse_lazy('mailing:main_page')
 
     def form_valid(self, form):
         # Сохранение в оперативную память (без добавление в БД).
@@ -73,7 +73,7 @@ class VerifyEmailView(RedirectView):
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
-    success_url = reverse_lazy('mailing:mailings_list')  ####################################################
+    success_url = reverse_lazy('mailing:main_page')
 
     # Что бы не пришлось на страницу профиля передавать pk.
     def get_object(self, queryset=None):
